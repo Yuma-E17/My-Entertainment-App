@@ -1,0 +1,168 @@
+export const THEMES = {
+  midnight: { id: 'midnight', name: 'Midnight', accent: '#3b82f6', bg: '#0a0c10' },
+  monochrome: { id: 'monochrome', name: 'Mono', accent: '#ffffff', bg: '#000000' },
+  rose: { id: 'rose', name: 'Rose', accent: '#f43f5e', bg: '#0a0506' },
+  emerald: { id: 'emerald', name: 'Emerald', accent: '#10b981', bg: '#020a06' },
+  violet: { id: 'violet', name: 'Violet', accent: '#8b5cf6', bg: '#06030a' },
+};
+
+export const STATUS_CONFIG = {
+  watching: { label: 'Currently Active', color: 'text-blue-400', bg: 'bg-blue-400/10' },
+  planned: { label: 'PLANNED', color: 'text-purple-400', bg: 'bg-purple-400/10' },
+  completed: { label: 'FINISHED', color: 'text-emerald-400', bg: 'bg-emerald-400/10' },
+  dropped: { label: 'DROPPED', color: 'text-red-400', bg: 'bg-red-400/10' },
+  onHold: { label: 'ON HOLD', color: 'text-yellow-400', bg: 'bg-yellow-400/10' },
+  rewatching: { label: 'REWATCHING', color: 'text-pink-400', bg: 'bg-pink-400/10' },
+};
+
+export const MEDIA_TYPES = [
+  { id: 'anime', label: 'Anime', icon: 'Zap' },
+  { id: 'manga', label: 'Manga', icon: 'BookCopy' },
+  { id: 'manhwa', label: 'Manhwa', icon: 'BookOpen' },
+  { id: 'webtoon', label: 'Webtoon', icon: 'Globe' },
+  { id: 'tv', label: 'TV Show', icon: 'Tv' },
+  { id: 'movie', label: 'Movie', icon: 'Film' },
+  { id: 'comic', label: 'Comic', icon: 'BookOpen' },
+];
+
+export const INITIAL_DATA = [
+ // --- IN PROGRESS (watching) ---
+  // Manga
+  { id: 'ip_m_1', title: 'One Piece', type: 'manga', status: 'watching', currentEpisode: '1171', rating: 0 },
+  { id: 'ip_m_2', title: 'Jujutsu Kaisen', type: 'manga', status: 'watching', currentEpisode: '263', rating: 0 },
+  { id: 'ip_m_3', title: 'Spy X Family', type: 'manga', status: 'watching', currentEpisode: '101', rating: 0 },
+  { id: 'ip_m_4', title: 'One Punch Man', type: 'manga', status: 'watching', currentEpisode: '223', rating: 0 },
+  { id: 'ip_m_5', title: 'Talentless Nana', type: 'manga', status: 'watching', currentEpisode: '116', rating: 0 },
+  { id: 'ip_m_6', title: 'Record of Ragnarok', type: 'manga', status: 'watching', currentEpisode: '114', rating: 0 },
+  { id: 'ip_m_7', title: 'Gachiakuta', type: 'manga', status: 'watching', currentEpisode: '148', rating: 0 },
+  { id: 'ip_m_8', title: 'Chainsaw Man', type: 'manga', status: 'watching', currentEpisode: '213', rating: 0 },
+  { id: 'ip_m_9', title: 'Juujika No Rokunin', type: 'manga', status: 'watching', currentEpisode: '221', rating: 0 },
+  { id: 'ip_m_10', title: 'Tokyo Underworld', type: 'manga', status: 'watching', currentEpisode: '88', rating: 0 },
+  { id: 'ip_m_11', title: 'JoJo Part 9', type: 'manga', status: 'watching', currentEpisode: '2', rating: 0 },
+  { id: 'ip_m_12', title: '100 Things to Do Before I Become a Zombie', type: 'manga', status: 'watching', currentEpisode: '79', rating: 0 },
+  { id: 'ip_m_13', title: 'Dragon Ball Super', type: 'manga', status: 'watching', currentEpisode: '104', rating: 0 },
+  { id: 'ip_m_14', title: 'Rebuild World', type: 'manga', status: 'watching', currentEpisode: '73', rating: 0 },
+  { id: 'ip_m_15', title: 'Dark Gathering', type: 'manga', status: 'watching', currentEpisode: '73', rating: 0 },
+  { id: 'ip_m_16', title: "Hope You're Happy Lemon", type: 'manga', status: 'watching', currentEpisode: '67', rating: 0 },
+  { id: 'ip_m_17', title: 'Rakudai Kenja No Gakuin', type: 'manga', status: 'watching', currentEpisode: '1', rating: 0 },
+  { id: 'ip_m_18', title: 'Heavenly Delusion', type: 'manga', status: 'watching', currentEpisode: '67', rating: 0 },
+  { id: 'ip_m_19', title: 'Kaiju No. 8', type: 'manga', status: 'watching', currentEpisode: '122', rating: 0 },
+  { id: 'ip_m_20', title: 'Transcending Future Magic', type: 'manga', status: 'watching', currentEpisode: '64', rating: 0 },
+  { id: 'ip_m_21', title: 'Dandadan', type: 'manga', status: 'watching', currentEpisode: '169', rating: 0 },
+  { id: 'ip_m_22', title: 'Hunter X Hunter', type: 'manga', status: 'watching', currentEpisode: '340', rating: 0 },
+  // Manhwa
+  { id: 'ip_mw_1', title: 'Wind Breaker', type: 'manhwa', status: 'watching', currentEpisode: '556', rating: 0 },
+  { id: 'ip_mw_2', title: 'Omniscient Reader', type: 'manhwa', status: 'watching', currentEpisode: '281', rating: 0 },
+  { id: 'ip_mw_3', title: 'Hero Killer', type: 'manhwa', status: 'watching', currentEpisode: '180', rating: 0 },
+  { id: 'ip_mw_4', title: 'Solo Max Level Newbie', type: 'manhwa', status: 'watching', currentEpisode: '175', rating: 0 },
+  { id: 'ip_mw_5', title: 'Mercenary Enrollment', type: 'manhwa', status: 'watching', currentEpisode: '209', rating: 0 },
+  { id: 'ip_mw_6', title: 'Revenge of the Iron-Blooded Hound', type: 'manhwa', status: 'watching', currentEpisode: '83', rating: 0 },
+  { id: 'ip_mw_7', title: 'Heavenly Inquisition Sword', type: 'manhwa', status: 'watching', currentEpisode: '94', rating: 0 },
+  { id: 'ip_mw_8', title: 'Study Group', type: 'manhwa', status: 'watching', currentEpisode: '280', rating: 0 },
+  { id: 'ip_mw_9', title: "Swordmaster’s Youngest Son", type: 'manhwa', status: 'watching', currentEpisode: '134', rating: 0 },
+  { id: 'ip_mw_10', title: 'The Beginning After the End', type: 'manhwa', status: 'watching', currentEpisode: '202', rating: 0 },
+  { id: 'ip_mw_11', title: 'Damn Reincarnation', type: 'manhwa', status: 'watching', currentEpisode: '81', rating: 0 },
+  { id: 'ip_mw_12', title: 'Superhuman Battlefield', type: 'manhwa', status: 'watching', currentEpisode: '0', rating: 0 },
+  // Webtoons
+  { id: 'ip_wt_1', title: 'Eleceed', type: 'webtoon', status: 'watching', currentEpisode: '387', rating: 0 },
+  { id: 'ip_wt_2', title: 'Unordinary', type: 'webtoon', status: 'watching', currentEpisode: '0', rating: 0 },
+  // Anime
+  { id: 'ip_a_1', title: 'Wistoria: Wand and Sword', type: 'anime', status: 'watching', currentEpisode: '5', rating: 0 },
+
+  // --- PLANNED ---
+  // TV
+  { id: 'pl_tv_1', title: 'Game of Thrones', type: 'tv', status: 'planned', currentEpisode: '0', rating: 0 },
+  { id: 'pl_tv_2', title: 'Total Drama Island (New)', type: 'tv', status: 'planned', currentEpisode: '0', rating: 0 },
+  // Anime
+  { id: 'pl_a_1', title: 'Alya Sometimes Hides Her Feelings in Russian', type: 'anime', status: 'planned', currentEpisode: '0', rating: 0 },
+  { id: 'pl_a_2', title: 'Eden of the East', type: 'anime', status: 'planned', currentEpisode: '0', rating: 0 },
+  { id: 'pl_a_3', title: 'Twin Star Exorcist', type: 'anime', status: 'planned', currentEpisode: '0', rating: 0 },
+  { id: 'pl_a_4', title: 'Kaze no Stigma', type: 'anime', status: 'planned', currentEpisode: '0', rating: 0 },
+  { id: 'pl_a_5', title: 'Sword Art Online Season 3+', type: 'anime', status: 'planned', currentEpisode: '0', rating: 0 },
+  { id: 'pl_a_6', title: 'Plus Sized Elf', type: 'anime', status: 'planned', currentEpisode: '0', rating: 0 },
+  { id: 'pl_a_7', title: 'Le Eden de la Grisaia', type: 'anime', status: 'planned', currentEpisode: '0', rating: 0 },
+  { id: 'pl_a_8', title: 'Highschool of the Dead', type: 'anime', status: 'planned', currentEpisode: '0', rating: 0 },
+  { id: 'pl_a_9', title: 'Requiem for the Phantom', type: 'anime', status: 'planned', currentEpisode: '0', rating: 0 },
+  { id: 'pl_a_10', title: 'The Ossan Newbie Adventurer', type: 'anime', status: 'planned', currentEpisode: '0', rating: 0 },
+  { id: 'pl_a_11', title: 'Why Does Nobody Remember Me in This World?', type: 'anime', status: 'planned', currentEpisode: '0', rating: 0 },
+  { id: 'pl_a_12', title: 'Milgram', type: 'anime', status: 'planned', currentEpisode: '0', rating: 0 },
+  { id: 'pl_a_13', title: 'Hellsing', type: 'anime', status: 'planned', currentEpisode: '0', rating: 0 },
+  { id: 'pl_a_14', title: 'Uma Musume Derby', type: 'anime', status: 'planned', currentEpisode: '0', rating: 0 },
+  // Manga
+  { id: 'pl_m_1', title: 'Berserk', type: 'manga', status: 'planned', currentEpisode: '0', rating: 0 },
+  { id: 'pl_m_2', title: 'Grand Blue Dreaming', type: 'manga', status: 'planned', currentEpisode: '0', rating: 0 },
+  { id: 'pl_m_3', title: 'Chained Soldier', type: 'manga', status: 'planned', currentEpisode: '0', rating: 0 },
+  { id: 'pl_m_4', title: 'Tsuyoshi', type: 'manga', status: 'planned', currentEpisode: '0', rating: 0 },
+  { id: 'pl_m_5', title: 'Galaxias', type: 'manga', status: 'planned', currentEpisode: '0', rating: 0 },
+  { id: 'pl_m_6', title: 'Gokurakugai', type: 'manga', status: 'planned', currentEpisode: '0', rating: 0 },
+  { id: 'pl_m_7', title: "Nue's Exorcist", type: 'manga', status: 'planned', currentEpisode: '0', rating: 0 },
+  { id: 'pl_m_8', title: 'Marriage Toxin', type: 'manga', status: 'planned', currentEpisode: '0', rating: 0 },
+  { id: 'pl_m_9', title: 'Shinobi Undercover', type: 'manga', status: 'planned', currentEpisode: '0', rating: 0 },
+  { id: 'pl_m_10', title: 'Ayashimon', type: 'manga', status: 'planned', currentEpisode: '0', rating: 0 },
+  { id: 'pl_m_11', title: 'Ultimate Exorcist Kiyoshi', type: 'manga', status: 'planned', currentEpisode: '0', rating: 0 },
+  { id: 'pl_m_12', title: 'Dusk Beyond the End', type: 'manga', status: 'planned', currentEpisode: '0', rating: 0 },
+  // Manhwa
+  { id: 'pl_mw_1', title: 'Regression Instruction Manual', type: 'manhwa', status: 'planned', currentEpisode: '0', rating: 0 },
+  { id: 'pl_mw_2', title: 'Return to Player', type: 'manhwa', status: 'planned', currentEpisode: '0', rating: 0 },
+  { id: 'pl_mw_3', title: 'The Executioner', type: 'manhwa', status: 'planned', currentEpisode: '0', rating: 0 },
+  { id: 'pl_mw_4', title: 'Foreigner on the Periphery', type: 'manhwa', status: 'planned', currentEpisode: '0', rating: 0 },
+  { id: 'pl_mw_5', title: 'The Extra Academy Survival Guide', type: 'manhwa', status: 'planned', currentEpisode: '0', rating: 0 },
+  { id: 'pl_mw_6', title: 'FFF-Class Trashero', type: 'manhwa', status: 'planned', currentEpisode: '0', rating: 0 },
+  { id: 'pl_mw_7', title: 'Death Penalty', type: 'manhwa', status: 'planned', currentEpisode: '0', rating: 0 },
+  { id: 'pl_mw_8', title: 'Priest of Corruption', type: 'manhwa', status: 'planned', currentEpisode: '0', rating: 0 },
+  { id: 'pl_mw_9', title: 'Reality Quest', type: 'manhwa', status: 'planned', currentEpisode: '0', rating: 0 },
+  { id: 'pl_mw_10', title: 'Strikeout Pitch', type: 'manhwa', status: 'planned', currentEpisode: '0', rating: 0 },
+  // Webtoons
+  { id: 'pl_wt_1', title: 'Villain with a Crush', type: 'webtoon', status: 'planned', currentEpisode: '0', rating: 0 },
+  { id: 'pl_wt_2', title: 'The Era of Overman', type: 'webtoon', status: 'planned', currentEpisode: '0', rating: 0 },
+  { id: 'pl_wt_3', title: 'Hand Jumper', type: 'webtoon', status: 'planned', currentEpisode: '0', rating: 0 },
+  { id: 'pl_wt_4', title: 'Gray', type: 'webtoon', status: 'planned', currentEpisode: '0', rating: 0 },
+  { id: 'pl_wt_5', title: 'Webtoon Character Na Kang Lim', type: 'webtoon', status: 'planned', currentEpisode: '0', rating: 0 },
+  { id: 'pl_wt_6', title: 'OTR of the Flame', type: 'webtoon', status: 'planned', currentEpisode: '0', rating: 0 },
+  { id: 'pl_wt_7', title: 'Shamoneyism', type: 'webtoon', status: 'planned', currentEpisode: '0', rating: 0 },
+  { id: 'pl_wt_8', title: "What Can't Kill Me", type: 'webtoon', status: 'planned', currentEpisode: '0', rating: 0 },
+  { id: 'pl_wt_9', title: 'Mia Has Returned', type: 'webtoon', status: 'planned', currentEpisode: '0', rating: 0 },
+  { id: 'pl_wt_10', title: 'Deadly Enterprise', type: 'webtoon', status: 'planned', currentEpisode: '0', rating: 0 },
+  // Comics
+  { id: 'pl_c_1', title: 'Crossed', type: 'comic', status: 'planned', currentEpisode: '0', rating: 0 },
+
+  // --- COMPLETED ---
+  // Anime (with episode counts where known)
+  { id: 'cp_a_1', title: 'Summer Time Rendering', type: 'anime', status: 'completed', currentEpisode: '25', rating: 5, isFavorite: true },
+  { id: 'cp_a_2', title: 'Steins;Gate', type: 'anime', status: 'completed', currentEpisode: '24', rating: 5 },
+  { id: 'cp_a_3', title: 'To Your Eternity', type: 'anime', status: 'completed', currentEpisode: '40', rating: 5 },
+  { id: 'cp_a_4', title: 'Naruto Shippuden', type: 'anime', status: 'completed', currentEpisode: '500', rating: 5 },
+  { id: 'cp_a_5', title: 'Naruto', type: 'anime', status: 'completed', currentEpisode: '220', rating: 5 },
+  { id: 'cp_a_6', title: '86', type: 'anime', status: 'completed', currentEpisode: '23', rating: 5 },
+  { id: 'cp_a_7', title: 'Ghost Stories', type: 'anime', status: 'completed', currentEpisode: '20', rating: 5 },
+  { id: 'cp_a_8', title: 'Gintama', type: 'anime', status: 'completed', currentEpisode: '367', rating: 5 },
+  { id: 'cp_a_9', title: 'Gurren Lagann', type: 'anime', status: 'completed', currentEpisode: '27', rating: 5 },
+  // Manga (episode counts unknown, set to 0)
+  { id: 'cp_m_1', title: "Takopi's Original Sin", type: 'manga', status: 'completed', currentEpisode: '0', rating: 5 },
+  { id: 'cp_m_2', title: 'Operation Yozakura', type: 'manga', status: 'completed', currentEpisode: '0', rating: 4 },
+  { id: 'cp_m_3', title: 'Oshi no Ko', type: 'manga', status: 'completed', currentEpisode: '0', rating: 5 },
+  { id: 'cp_m_4', title: 'Dr. Stone', type: 'manga', status: 'completed', currentEpisode: '0', rating: 5 },
+  { id: 'cp_m_5', title: 'Tomodachi Game', type: 'manga', status: 'completed', currentEpisode: '0', rating: 5 },
+  { id: 'cp_m_6', title: 'Pygmalion', type: 'manga', status: 'completed', currentEpisode: '0', rating: 4 },
+  { id: 'cp_m_7', title: 'Real Account', type: 'manga', status: 'completed', currentEpisode: '0', rating: 4 },
+  { id: 'cp_m_8', title: 'Call of the Night', type: 'manga', status: 'completed', currentEpisode: '0', rating: 5 },
+  { id: 'cp_m_9', title: 'Mashle', type: 'manga', status: 'completed', currentEpisode: '0', rating: 5 },
+  { id: 'cp_m_10', title: 'Gyakusatsu Happy End', type: 'manga', status: 'completed', currentEpisode: '0', rating: 4 },
+  { id: 'cp_m_11', title: 'Abyss Rage', type: 'manga', status: 'completed', currentEpisode: '0', rating: 4 },
+  { id: 'cp_m_12', title: 'Phantom Seer', type: 'manga', status: 'completed', currentEpisode: '0', rating: 4 },
+  // Manhwa
+  { id: 'cp_mw_1', title: "A Returner's Magic Should Be Special", type: 'manhwa', status: 'completed', currentEpisode: '0', rating: 5 },
+  { id: 'cp_mw_2', title: 'Ultimate Outcast', type: 'manhwa', status: 'completed', currentEpisode: '0', rating: 4 },
+  { id: 'cp_mw_3', title: 'Legend of the Northern Blade', type: 'manhwa', status: 'completed', currentEpisode: '0', rating: 5 },
+  { id: 'cp_mw_4', title: 'Leviathan', type: 'manhwa', status: 'completed', currentEpisode: '0', rating: 5 },
+  { id: 'cp_mw_5', title: 'Solo Leveling', type: 'manhwa', status: 'completed', currentEpisode: '0', rating: 5, isFavorite: true },
+  // TV
+  { id: 'cp_tv_1', title: 'Manifest', type: 'tv', status: 'completed', currentEpisode: '0', rating: 4 },
+  { id: 'cp_tv_2', title: 'Loki', type: 'tv', status: 'completed', currentEpisode: '0', rating: 5 },
+  { id: 'cp_tv_3', title: 'Skull Island', type: 'tv', status: 'completed', currentEpisode: '0', rating: 4 },
+  { id: 'cp_tv_4', title: 'Invincible', type: 'tv', status: 'completed', currentEpisode: '0', rating: 5 },
+
+  // --- DROPPED ---
+  { id: 'dr_mw_1', title: 'Warrior Highschool', type: 'manhwa', status: 'dropped', currentEpisode: '45', rating: 3, description: 'Canceled at Chapter 45' },
+  { id: 'dr_a_1', title: 'Higurashi', type: 'anime', status: 'dropped', currentEpisode: '0', rating: 1 },
+];
