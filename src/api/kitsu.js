@@ -14,7 +14,7 @@ export const searchKitsu = async (title, type) => {
       image: attrs.posterImage?.original,
       banner: attrs.coverImage?.original,
       episodes: apiType === 'anime' ? attrs.episodeCount : attrs.chapterCount,
-      genres: [], // Kitsu requires a separate request for genres
+      genres: [],
       id: item.id,
       year: attrs.startDate?.slice(0,4),
     }, 'kitsu');
