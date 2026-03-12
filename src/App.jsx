@@ -225,11 +225,43 @@ function App() {
     setSearching(false);
   };
 
+  // FIXED: handleSearchSelect now correctly handles both manual and bulk sync
   const handleSearchSelect = (result) => {
-    // Update the series in the main list
-    setSeries(prev => prev.map(s => 
-      s.id === currentBulkItemRef.current?.id ? {
-        ...s,
+    // If we're in bulk sync mode
+    if (bulkQueue.length > 0 && currentBulkItemRef.current) {
+      // Update the series directly in the main list
+      setSeries(prev => prev.map(s => 
+        s.id === currentBulkItemRef.current?.id ? {
+          ...s,
+          description: result.description,
+          image: result.image,
+          splashImage: result.banner,
+          genres: result.genres || [],
+          latestCount: result.episodes,
+          season: result.season,
+          volume: result.volume,
+          sourceId: result.sourceId,
+          sourceApi: result.sourceApi,
+        } : s
+      ));
+      setShowSearchModal(false);
+
+      // Advance the queue
+      const nextIndex = currentBulkIndex + 1;
+      if (nextIndex < bulkQueue.length) {
+        setCurrentBulkIndex(nextIndex);
+        currentBulkItemRef.current = bulkQueue[nextIndex];
+        handleSearch(bulkQueue[nextIndex].title, bulkQueue[nextIndex].type);
+      } else {
+        setBulkQueue([]);
+        setCurrentBulkIndex(0);
+        currentBulkItemRef.current = null;
+        toast.success('Bulk sync completed!');
+      }
+    } else {
+      // Manual mode – update the series being edited
+      setEditingSeries(prev => ({
+        ...prev,
         description: result.description,
         image: result.image,
         splashImage: result.banner,
@@ -239,24 +271,8 @@ function App() {
         volume: result.volume,
         sourceId: result.sourceId,
         sourceApi: result.sourceApi,
-      } : s
-    ));
-    setShowSearchModal(false);
-
-    // Move to next in queue if in bulk mode
-    if (bulkQueue.length > 0) {
-      const nextIndex = currentBulkIndex + 1;
-      if (nextIndex < bulkQueue.length) {
-        setCurrentBulkIndex(nextIndex);
-        currentBulkItemRef.current = bulkQueue[nextIndex];
-        handleSearch(bulkQueue[nextIndex].title, bulkQueue[nextIndex].type);
-      } else {
-        // Finished
-        setBulkQueue([]);
-        setCurrentBulkIndex(0);
-        currentBulkItemRef.current = null;
-        toast.success('Bulk sync completed!');
-      }
+      }));
+      setShowSearchModal(false);
     }
   };
 
