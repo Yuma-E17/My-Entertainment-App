@@ -1,5 +1,3 @@
-// src/components/modals/BulkSyncModal.jsx
-
 import React, { useState } from 'react';
 import { X, Check } from 'lucide-react';
 import { isMissingMetadata } from '../../utils/helpers';
@@ -72,8 +70,14 @@ export const BulkSyncModal = ({ series, onClose, onStart }) => {
                 {selected.has(item.id) && <Check size={14} className="text-white" />}
               </div>
               <div className="flex-1">
-                <p className="font-bold text-sm">{item.title}</p>
+                <p className="font-bold text-sm">{item.title || 'Untitled'}</p>
                 <p className="text-xs text-white/40">{item.type} • {item.status}</p>
+                <div className="flex gap-1 mt-1 flex-wrap">
+                  {!item.description && <span className="text-[8px] bg-red-500/20 text-red-400 px-1.5 py-0.5 rounded">No desc</span>}
+                  {!item.image && <span className="text-[8px] bg-red-500/20 text-red-400 px-1.5 py-0.5 rounded">No image</span>}
+                  {(!item.genres || item.genres.length === 0) && <span className="text-[8px] bg-red-500/20 text-red-400 px-1.5 py-0.5 rounded">No genres</span>}
+                  {!item.latestCount && <span className="text-[8px] bg-red-500/20 text-red-400 px-1.5 py-0.5 rounded">No latest</span>}
+                </div>
               </div>
               {item.image && <img src={item.image} className="w-10 h-12 object-cover rounded" alt="" />}
             </div>

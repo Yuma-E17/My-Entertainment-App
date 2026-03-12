@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
-import { Menu } from 'lucide-react';
+import { Menu, RefreshCw } from 'lucide-react';
 import { useLocalStorage } from './components/hooks/useLocalStorage';
 import { useKeyboardShortcuts } from './components/hooks/useKeyboardShortcuts';
 import { useSeriesActions } from './components/hooks/useSeriesActions';
@@ -59,6 +59,11 @@ function App() {
   const [isSyncing, setIsSyncing] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const searchInputRef = useRef();
+
+  // Bulk sync queue
+  const [bulkQueue, setBulkQueue] = useState([]);
+  const [currentBulkIndex, setCurrentBulkIndex] = useState(0);
+  const currentBulkItemRef = useRef(null);
 
   const currentTheme = THEMES[settings.theme] || THEMES.midnight;
   const accentColor = settings.customAccent || currentTheme.accent;
@@ -221,19 +226,47 @@ function App() {
   };
 
   const handleSearchSelect = (result) => {
-    setEditingSeries(prev => ({
-      ...prev,
-      description: result.description,
-      image: result.image,
-      splashImage: result.banner,
-      genres: result.genres || [],
-      latestCount: result.episodes,
-      season: result.season,
-      volume: result.volume,
-      sourceId: result.sourceId,
-      sourceApi: result.sourceApi,
-    }));
+    // Update the series in the main list
+    setSeries(prev => prev.map(s => 
+      s.id === currentBulkItemRef.current?.id ? {
+        ...s,
+        description: result.description,
+        image: result.image,
+        splashImage: result.banner,
+        genres: result.genres || [],
+        latestCount: result.episodes,
+        season: result.season,
+        volume: result.volume,
+        sourceId: result.sourceId,
+        sourceApi: result.sourceApi,
+      } : s
+    ));
     setShowSearchModal(false);
+
+    // Move to next in queue if in bulk mode
+    if (bulkQueue.length > 0) {
+      const nextIndex = currentBulkIndex + 1;
+      if (nextIndex < bulkQueue.length) {
+        setCurrentBulkIndex(nextIndex);
+        currentBulkItemRef.current = bulkQueue[nextIndex];
+        handleSearch(bulkQueue[nextIndex].title, bulkQueue[nextIndex].type);
+      } else {
+        // Finished
+        setBulkQueue([]);
+        setCurrentBulkIndex(0);
+        currentBulkItemRef.current = null;
+        toast.success('Bulk sync completed!');
+      }
+    }
+  };
+
+  const handleBulkSyncStart = (selectedSeries) => {
+    setShowBulkSyncModal(false);
+    if (selectedSeries.length === 0) return;
+    setBulkQueue(selectedSeries);
+    setCurrentBulkIndex(0);
+    currentBulkItemRef.current = selectedSeries[0];
+    handleSearch(selectedSeries[0].title, selectedSeries[0].type);
   };
 
   const exportData = () => {
@@ -290,13 +323,6 @@ function App() {
     }
   };
 
-  const handleBulkSyncStart = (selectedSeries) => {
-    setShowBulkSyncModal(false);
-    if (selectedSeries.length > 0) {
-      handleSearch(selectedSeries[0].title, selectedSeries[0].type);
-    }
-  };
-
   useKeyboardShortcuts({
     focusSearch: () => searchInputRef.current?.focus(),
     newSeries: handleNewSeries,
@@ -308,6 +334,18 @@ function App() {
   return (
     <div className="min-h-screen text-white font-sans flex overflow-hidden" style={{ backgroundColor: currentTheme.bg }}>
       <Toaster position="bottom-right" toastOptions={{ style: { background: '#333', color: '#fff' } }} />
+
+      {/* Bulk sync progress indicator */}
+      {bulkQueue.length > 0 && (
+        <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 bg-blue-500/20 backdrop-blur-md border border-blue-500/30 rounded-full px-6 py-3">
+          <div className="flex items-center gap-3">
+            <RefreshCw size={18} className="animate-spin text-blue-400" />
+            <span className="text-xs font-black tracking-widest text-blue-400">
+              Syncing {currentBulkIndex + 1} of {bulkQueue.length}
+            </span>
+          </div>
+        </div>
+      )}
 
       {/* Mobile sidebar toggle */}
       <button
