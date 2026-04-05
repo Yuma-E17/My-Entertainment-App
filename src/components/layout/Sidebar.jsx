@@ -1,7 +1,7 @@
 import React from 'react';
-import { LayoutGrid, Play, Bookmark, Check, Ban, Heart, Plus, RefreshCw, Palette, Library, Layers } from 'lucide-react'; // removed Menu
+import { LayoutGrid, Play, Bookmark, Check, Ban, Heart, Plus, RefreshCw, Palette, Library, Layers, LogOut } from 'lucide-react';
 
-export const Sidebar = ({ activeTab, setActiveTab, onNewSeries, onBulkSync, onOpenSettings, onClose }) => {
+export const Sidebar = ({ activeTab, setActiveTab, onNewSeries, onBulkSync, onOpenSettings, onClose, onLogout }) => {
   const navItems = [
     { id: 'dashboard', label: 'DASHBOARD', icon: LayoutGrid },
     { id: 'all', label: 'ALL SERIES', icon: Layers },
@@ -62,6 +62,12 @@ export const Sidebar = ({ activeTab, setActiveTab, onNewSeries, onBulkSync, onOp
           className="w-full flex items-center justify-center gap-2 py-4 rounded-[20px] bg-white/5 text-[10px] font-black text-white/30 hover:text-white tracking-widest transition-colors"
         >
           <Palette size={16} /> SETTINGS
+        </button>
+        <button
+          onClick={onLogout}
+          className="w-full flex items-center justify-center gap-2 py-4 rounded-[20px] bg-red-500/10 text-red-400 hover:bg-red-500/20 text-[10px] font-black tracking-widest transition-colors border border-red-500/20"
+        >
+          <LogOut size={16} /> SIGN OUT
         </button>
       </div>
     </aside>

@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
-import { X, Trash2, Heart, Search } from 'lucide-react';
+import { X, Trash2, Heart, Search, Star } from 'lucide-react';
 import { MEDIA_TYPES, STATUS_CONFIG } from '../../utils/constants';
+import toast from 'react-hot-toast';
 
 export const EditSeriesModal = ({
   series,
@@ -20,6 +21,15 @@ export const EditSeriesModal = ({
     searchTimeoutRef.current = setTimeout(() => {
       onSearch(title, type);
     }, 500);
+  };
+
+  const handleMarkCaughtUp = () => {
+    if (series.latestCount) {
+      setSeries({ ...series, currentEpisode: series.latestCount.toString() });
+      toast.success(`Caught up! Current ${series.type === 'anime' || series.type === 'tv' ? 'episode' : 'chapter'} set to ${series.latestCount}`);
+    } else {
+      toast.error('No latest count available. Please sync metadata first.');
+    }
   };
 
   if (!series) return null;
@@ -80,6 +90,29 @@ export const EditSeriesModal = ({
         {/* Main form */}
         <div className="p-20 pt-32 grid grid-cols-2 gap-20">
           <div className="space-y-12">
+            {/* Rating section above STATUS */}
+            <div className="space-y-2">
+              <label className="text-[10px] font-black text-white/20 uppercase tracking-[0.3em]">YOUR RATING</label>
+              <div className="flex items-center gap-4 p-4 bg-white/[0.03] rounded-2xl border border-white/10">
+                <div className="flex items-center gap-2">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <button
+                      key={star}
+                      onClick={() => setSeries({ ...series, rating: star })}
+                      className="focus:outline-none"
+                    >
+                      <Star
+                        size={28}
+                        className={star <= series.rating ? "text-yellow-400 fill-current" : "text-white/20"}
+                      />
+                    </button>
+                  ))}
+                </div>
+                <span className="text-2xl font-black text-white/60">{series.rating}/5</span>
+              </div>
+            </div>
+
+            {/* STATUS section */}
             <div className="space-y-4">
               <label className="text-[10px] font-black text-white/20 uppercase tracking-[0.3em]">STATUS</label>
               <div className="grid grid-cols-2 gap-4">
@@ -99,6 +132,7 @@ export const EditSeriesModal = ({
               </div>
             </div>
 
+            {/* GENRES section */}
             <div className="space-y-2">
               <label className="text-[10px] font-black text-white/20 uppercase tracking-[0.3em]">GENRES</label>
               <div className="flex flex-wrap gap-2 mb-2">
@@ -126,6 +160,7 @@ export const EditSeriesModal = ({
               />
             </div>
 
+            {/* Progress & Season/Volume */}
             <div className="flex items-center gap-10 p-8 bg-white/[0.03] rounded-3xl border border-white/10">
               <div className="flex-1">
                 <label className="text-[10px] font-black text-white/20 uppercase tracking-widest mb-3 block">
@@ -158,8 +193,19 @@ export const EditSeriesModal = ({
                 />
               </div>
             </div>
+
+            {/* Mark as caught up button */}
+            {series.latestCount && (
+              <button
+                onClick={handleMarkCaughtUp}
+                className="w-full py-3 rounded-xl bg-blue-500/20 text-blue-400 text-[10px] font-black uppercase tracking-widest hover:bg-blue-500/30 transition-colors"
+              >
+                Mark as caught up
+              </button>
+            )}
           </div>
 
+          {/* Right column */}
           <div className="space-y-10 flex flex-col justify-between">
             <div className="space-y-4">
               <label className="text-[10px] font-black text-white/20 uppercase tracking-[0.3em]">SYNOPSIS</label>

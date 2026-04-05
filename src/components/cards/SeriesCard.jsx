@@ -1,6 +1,5 @@
 import React from 'react';
-import { Plus } from 'lucide-react';
-import { StarRating } from '../common/StarRating';
+import { Plus, Star } from 'lucide-react';
 import { ProgressBar } from '../common/ProgressBar';
 import { isUpToDate } from '../../utils/helpers';
 import { STATUS_CONFIG } from '../../utils/constants';
@@ -26,6 +25,15 @@ export const SeriesCard = ({ item, accentColor, settings, onClick, onQuickProgre
     return 'CH';
   };
   const unit = getUnit(item.type);
+
+  // Helper for 5-star display (non‑interactive)
+  const StarRating = ({ value }) => (
+    <div className="flex items-center gap-1">
+      {[1, 2, 3, 4, 5].map((star) => (
+        <Star key={star} size={12} className={star <= value ? "text-yellow-400 fill-current" : "text-white/20"} />
+      ))}
+    </div>
+  );
 
   // Wide layout version
   if (settings.wideLayout) {

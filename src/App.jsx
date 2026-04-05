@@ -1,7 +1,9 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { Menu, RefreshCw } from 'lucide-react';
-import { useLocalStorage } from './components/hooks/useLocalStorage';
+import { auth, db, signInWithGoogle, logout } from './firebase';
+import { doc, getDoc, setDoc, onSnapshot } from "firebase/firestore";
+import { onAuthStateChanged } from "firebase/auth";
 import { useKeyboardShortcuts } from './components/hooks/useKeyboardShortcuts';
 import { useSeriesActions } from './components/hooks/useSeriesActions';
 import { Sidebar } from './components/layout/Sidebar';
@@ -16,7 +18,7 @@ import { isMissingMetadata } from './utils/helpers';
 import { searchAllApis } from './api';
 
 function App() {
-  const [series, setSeries] = useLocalStorage('mel_pro_v3_final', INITIAL_DATA);
+  const [series, setSeries] = useState([]);
   const [activityLog, setActivityLog] = useState([]);
   const [activeTab, setActiveTab] = useState('dashboard');
   const [searchQuery, setSearchQuery] = useState('');
@@ -26,8 +28,10 @@ function App() {
   const [genreFilterMode, setGenreFilterMode] = useState('or');
   const [isAdding, setIsAdding] = useState(false);
   const [editingSeries, setEditingSeries] = useState(null);
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
   
-  // Settings with localStorage persistence
+  // Settings (localStorage – not synced)
   const [settings, setSettings] = useState(() => {
     const saved = localStorage.getItem('mel_settings');
     if (saved) {
@@ -70,7 +74,43 @@ function App() {
 
   const { addSeries, updateSeries, deleteSeries } = useSeriesActions(series, setSeries, setActivityLog);
 
-  // Filtering and sorting logic
+  // Auth and Firestore sync
+  useEffect(() => {
+    const unsubscribeAuth = onAuthStateChanged(auth, async (firebaseUser) => {
+      if (firebaseUser) {
+        setUser(firebaseUser);
+        const userDocRef = doc(db, "users", firebaseUser.uid);
+        const snapshot = await getDoc(userDocRef);
+        if (snapshot.exists()) {
+          setSeries(snapshot.data().series);
+        } else {
+          setSeries(INITIAL_DATA);
+          await setDoc(userDocRef, { series: INITIAL_DATA });
+        }
+        // Real‑time listener
+        const unsubscribeDoc = onSnapshot(userDocRef, (docSnap) => {
+          if (docSnap.exists()) setSeries(docSnap.data().series);
+        });
+        return () => unsubscribeDoc();
+      } else {
+        setUser(null);
+        setSeries([]);
+      }
+      setLoading(false);
+    });
+    return () => unsubscribeAuth();
+  }, []);
+
+  // Save series to Firestore whenever it changes
+  useEffect(() => {
+    if (user && series.length > 0) {
+      const userDocRef = doc(db, "users", user.uid);
+      setDoc(userDocRef, { series }, { merge: true });
+    }
+  }, [series, user]);
+
+  // ---- All existing handlers with auto‑complete added ----
+  // Filtering and sorting logic (unchanged)
   const baseList = useMemo(() => {
     if (activeTab === 'dashboard' || activeTab === 'favorites' || activeTab === 'all') return series;
     return series.filter(s => s.status === activeTab);
@@ -155,23 +195,33 @@ function App() {
     if (window.innerWidth < 1024) setSidebarOpen(false);
   };
 
+  // Modified handleSaveSeries with auto‑complete
   const handleSaveSeries = (updated) => {
-    const exists = series.some(s => s.id === updated.id);
+    // Auto‑complete if caught up
+    let final = { ...updated };
+    if (final.latestCount && parseInt(final.currentEpisode) >= parseInt(final.latestCount)) {
+      if (final.status !== 'completed') {
+        final.status = 'completed';
+        toast.success(`${final.title} is now completed!`);
+      }
+    }
+
+    const exists = series.some(s => s.id === final.id);
     if (exists) {
-      updateSeries(updated);
+      updateSeries(final);
       toast.success('Series updated');
       setIsAdding(false);
       return;
     }
 
-    const duplicate = series.find(s => s.title.toLowerCase() === updated.title.toLowerCase());
+    const duplicate = series.find(s => s.title.toLowerCase() === final.title.toLowerCase());
     if (duplicate) {
-      if (!window.confirm(`"${updated.title}" already exists. Add anyway?`)) {
+      if (!window.confirm(`"${final.title}" already exists. Add anyway?`)) {
         return;
       }
     }
 
-    addSeries(updated);
+    addSeries(final);
     toast.success('Series added');
     setIsAdding(false);
   };
@@ -225,11 +275,8 @@ function App() {
     setSearching(false);
   };
 
-  // FIXED: handleSearchSelect now correctly handles both manual and bulk sync
   const handleSearchSelect = (result) => {
-    // If we're in bulk sync mode
     if (bulkQueue.length > 0 && currentBulkItemRef.current) {
-      // Update the series directly in the main list
       setSeries(prev => prev.map(s => 
         s.id === currentBulkItemRef.current?.id ? {
           ...s,
@@ -245,8 +292,6 @@ function App() {
         } : s
       ));
       setShowSearchModal(false);
-
-      // Advance the queue
       const nextIndex = currentBulkIndex + 1;
       if (nextIndex < bulkQueue.length) {
         setCurrentBulkIndex(nextIndex);
@@ -259,7 +304,6 @@ function App() {
         toast.success('Bulk sync completed!');
       }
     } else {
-      // Manual mode – update the series being edited
       setEditingSeries(prev => ({
         ...prev,
         description: result.description,
@@ -347,11 +391,28 @@ function App() {
     showHelp: () => setShowHelp(true),
   });
 
+  if (loading) {
+    return <div className="flex items-center justify-center h-screen bg-black text-white">Loading...</div>;
+  }
+
+  if (!user) {
+    return (
+      <div className="flex flex-col items-center justify-center h-screen bg-black">
+        <h1 className="text-4xl font-black mb-8">My Entertainment List</h1>
+        <button
+          onClick={signInWithGoogle}
+          className="px-8 py-4 bg-white text-black rounded-full font-black text-sm tracking-widest"
+        >
+          Sign in with Google
+        </button>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen text-white font-sans flex overflow-hidden" style={{ backgroundColor: currentTheme.bg }}>
       <Toaster position="bottom-right" toastOptions={{ style: { background: '#333', color: '#fff' } }} />
 
-      {/* Bulk sync progress indicator */}
       {bulkQueue.length > 0 && (
         <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 bg-blue-500/20 backdrop-blur-md border border-blue-500/30 rounded-full px-6 py-3">
           <div className="flex items-center gap-3">
@@ -363,7 +424,6 @@ function App() {
         </div>
       )}
 
-      {/* Mobile sidebar toggle */}
       <button
         onClick={() => setSidebarOpen(!sidebarOpen)}
         className="lg:hidden fixed top-4 left-4 z-50 p-2 bg-black/50 rounded-lg backdrop-blur-sm border border-white/10"
@@ -371,7 +431,6 @@ function App() {
         <Menu size={24} />
       </button>
 
-      {/* Sidebar with overlay */}
       <div className={`fixed inset-0 z-40 lg:static lg:inset-auto lg:z-auto transition-transform transform ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0`}>
         <Sidebar
           activeTab={activeTab}
@@ -380,6 +439,7 @@ function App() {
           onBulkSync={() => setShowBulkSyncModal(true)}
           onOpenSettings={() => setShowSettings(true)}
           onClose={() => setSidebarOpen(false)}
+          onLogout={logout}
         />
       </div>
       {sidebarOpen && (

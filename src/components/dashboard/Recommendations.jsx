@@ -5,7 +5,7 @@ import { RecommendationCard } from '../cards/RecommendationCard';
 import { SkeletonCard } from '../cards/SkeletonCard';
 
 export const Recommendations = ({ series, accentColor, onAdd, settings }) => {
-  const { recommendations, loading, refresh } = useRecommendations(series);
+  const { recommendations, loading, refresh, hideRecommendation } = useRecommendations(series);
 
   return (
     <div className="mt-16">
@@ -29,7 +29,13 @@ export const Recommendations = ({ series, accentColor, onAdd, settings }) => {
       ) : recommendations.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {recommendations.map(rec => (
-            <RecommendationCard key={rec.id} rec={rec} accentColor={accentColor} onAdd={onAdd} />
+            <RecommendationCard
+              key={rec.id}
+              rec={rec}
+              accentColor={accentColor}
+              onAdd={onAdd}
+              onHide={hideRecommendation}
+            />
           ))}
         </div>
       ) : (
